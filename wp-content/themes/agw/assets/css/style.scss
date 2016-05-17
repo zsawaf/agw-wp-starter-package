@@ -20,7 +20,7 @@ Neat is distributed under the terms of the GNU GPL v2 or later.
  * ------------------------------------------------------------------------- */
 @import "vendor/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "vendor/slider";
-@import "vendor/animsition";
+@import "vendor/animsition.min";
 /* ----------------------------------------------------------------------------
  * Mixins & Variables
  * ------------------------------------------------------------------------- */
@@ -40,3 +40,4 @@ Neat is distributed under the terms of the GNU GPL v2 or later.
 
 /* WPCore */
 @import "partials/wpcore";
+@import "partials/main";
