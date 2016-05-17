@@ -143,6 +143,7 @@ gulp.task('vendorsJs', function() {
 	return 	gulp.src([
 				'./assets/js/vendor/bootstrap.js',
 				'./assets/js/vendor/jquery.matchHeight.js',
+				'./assets/js/vendor/slider.min.js',
 			])
 				.pipe(concat('vendors.js'))
 				.pipe(gulp.dest('./assets/js'))
