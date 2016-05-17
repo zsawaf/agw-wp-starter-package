@@ -39,7 +39,8 @@ var project 		= 'neat', // Project name, used for build zip.
 			];
 
 // Load plugins
-	var gulp     = require('gulp'),
+	var async 		 = require('async'),
+		gulp     	 = require('gulp'),
 		browserSync  = require('browser-sync'), // Asynchronous browser loading on .scss file changes
 		reload       = browserSync.reload,
 		autoprefixer = require('gulp-autoprefixer'), // Autoprefixing magic
@@ -60,7 +61,10 @@ var project 		= 'neat', // Project name, used for build zip.
 		zip          = require('gulp-zip'), // Using to zip up our packaged theme into a tasty zip file that can be installed in WordPress!
 		plumber      = require('gulp-plumber'), // Helps prevent stream crashing on errors
 		cache        = require('gulp-cache'),
-		sourcemaps   = require('gulp-sourcemaps');
+		sourcemaps   = require('gulp-sourcemaps'),
+		modernizr 	 = require('gulp-modernizr'),
+		iconfont 	 = require('gulp-iconfont'),
+		runTimestamp = Math.round(Date.now()/1000);
 
 
 /**
@@ -93,7 +97,47 @@ gulp.task('browser-sync', function() {
 	});
 });
 
+/**
+ * Icon Font
+ *	
+ * Convert svg icons to a font family. 	
+*/
+gulp.task('Iconfont', function(done){
+  var iconStream = gulp.src(['./assets/icons/*.svg'])
+    .pipe(iconfont({ fontName: 'icons' }));
 
+  async.parallel([
+    function handleGlyphs (cb) {
+      iconStream.on('glyphs', function(glyphs, options) {
+        gulp.src('templates/myfont.css')
+          .pipe(consolidate('icons', {
+            glyphs: glyphs,
+            fontName: 'icons',
+            fontPath: '../fonts/',
+            className: 's'
+          }))
+          .pipe(gulp.dest('www/css/'))
+          .on('finish', cb);
+      });
+    },
+    function handleFonts (cb) {
+      iconStream
+        .pipe(gulp.dest('./assets/fonts/'))
+        .on('finish', cb);
+    }
+  ], done);
+});
+
+/**
+ * Modernizr
+ *
+ * A Gulp wrapper for modernizr
+*/
+gulp.task('modernizr', function() {
+  gulp.src('./js/*.js')
+    .pipe(modernizr())
+    .pipe(gulp.dest("build/"))
+});
 
 /**
  * Styles
@@ -278,9 +322,7 @@ gulp.task('buildImages', function() {
 
 
  // Watch Task
- gulp.task('default', ['styles', 'vendorsJs', 'scriptsJs', 'images', 'browser-sync'], function () {
- 	gulp.watch('./assets/img/raw/**/*', ['images']);
+ gulp.task('default', ['styles', 'vendorsJs', 'scriptsJs', 'images', 'Iconfont', 'modernizr'], function () {
+ 	gulp.watch('./assets/js/**/*.js', ['scriptsJs']);
  	gulp.watch('./assets/css/**/*.scss', ['styles']);
- 	gulp.watch('./assets/js/**/*.js', ['scriptsJs', browserSync.reload]);
-
  });
