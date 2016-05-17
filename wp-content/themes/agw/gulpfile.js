@@ -324,7 +324,7 @@ gulp.task('buildImages', function() {
 
 
  // Watch Task
- gulp.task('default', ['styles', 'vendorsJs', 'scriptsJs', 'images', 'Iconfont', 'modernizr'], function () {
+ gulp.task('default', ['styles', 'vendorsJs', 'scriptsJs', 'images', 'Iconfont', 'modernizr',  'browser-sync'], function () {
  	gulp.watch('./assets/js/**/*.js', ['scriptsJs']);
  	gulp.watch('./assets/css/**/*.scss', ['styles']);
  });
