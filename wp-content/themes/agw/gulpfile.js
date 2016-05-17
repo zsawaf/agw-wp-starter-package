@@ -52,7 +52,6 @@ var project 		= 'neat', // Project name, used for build zip.
 		rename       = require('gulp-rename'),
 		concat       = require('gulp-concat'),
 		notify       = require('gulp-notify'),
-		cmq          = require('gulp-combine-media-queries'),
 		runSequence  = require('gulp-run-sequence'),
 		sass         = require('gulp-sass'),
 		plugins      = require('gulp-load-plugins')({ camelize: true }),
@@ -166,7 +165,6 @@ gulp.task('styles', function () {
 				.pipe(plumber.stop())
 				.pipe(gulp.dest('./'))
 				.pipe(filter('**/*.css')) // Filtering stream to only css files
-				.pipe(cmq()) // Combines Media Queries
 				.pipe(reload({stream:true})) // Inject Styles when style file is created
 				.pipe(rename({ suffix: '.min' }))
 				.pipe(minifycss({
@@ -187,7 +185,10 @@ gulp.task('vendorsJs', function() {
 	return 	gulp.src([
 				'./assets/js/vendor/bootstrap.js',
 				'./assets/js/vendor/jquery.matchHeight.js',
-				'./assets/js/vendor/slider.min.js',
+				/**
+				 * Uncomment the following to use in your project
+				 */
+				// './assets/js/vendor/slider.min.js',
 				//'./assets/js/vendor/animsition.min.js',
 			])
 				.pipe(concat('vendors.js'))
