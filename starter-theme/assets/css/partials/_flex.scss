@@ -1,0 +1,30 @@
+.tags {
+	display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+	.tag {
+		flex-basis: 25%;
+		p {
+			max-width: 200px;
+		}
+	}
+}
+
+@media(max-width: 991px) {
+	.tags {
+		.tag {
+			flex-basis: 50%;
+		}
+	}
+}
+
+@media(max-width: 768px) {
+	.tags {
+		flex-flow: column wrap;
+		justify-content: center;
+		align-items: center;
+		.tag {
+			flex-basis: 100%;
+		}
+	}
+}
